@@ -81,9 +81,9 @@ To wrap up the talk, I will explain how to gain access to these tools if you don
 * Although this is my first PyCon talk proposal, I've presented a number of python projects and talks around the Boston area.
 * Since it will be impossible to fabricate these objects during the talk, I will bring pre-fabricated versions of the examples for the attendees to examine in detail.
 * I actively publish and support many python projects on my GitHub [profile](https://github.com/vishnubob).  My most popular project is my python [MIDI library](https://github.com/vishnubob/python-midi), which I have maintained for over ten years.  All of the projects I will speak about are already published:
-** My laser cuttable snowflake generator is published on [GitHub](https://github.com/vishnubob/snowflake).
-** My 3D printable Model Rocket kit is published as an [instructable](http://www.instructables.com/id/Rockit-Model-Rocket-Construction-Kit/), a model on [Thingiverse](http://www.thingiverse.com/thing:262182), and a repository on [GitHub](https://github.com/vishnubob/rockit).
-** My Python-SCAD Library is published on [GitHub](https://github.com/vishnubob/pyscad).
+  * My laser cuttable snowflake generator is published on [GitHub](https://github.com/vishnubob/snowflake).
+  * My 3D printable Model Rocket kit is published as an [instructable](http://www.instructables.com/id/Rockit-Model-Rocket-Construction-Kit/), a model on [Thingiverse](http://www.thingiverse.com/thing:262182), and a repository on [GitHub](https://github.com/vishnubob/rockit).
+  * My Python-SCAD Library is published on [GitHub](https://github.com/vishnubob/pyscad).
 * This is a large amount of material to cover in 30 minutes.  My goal of this talk is to spark the imagination of folks who attend, instead of diving deep into the details.  I will supplement my talk with additional resources online and spend time at the conference to talk to folks who want more information.
 
 # Additional Requirements
