@@ -26,7 +26,7 @@ After a brief introduction to laser cutters and 3D printers, how they work, and 
 
 3D printing is more complicated, since it adds a dimension to our designs.  After an initial discussion about how 3D data is expressed, and how 3D printers use this data to generate objects, we will side-step the complexity of describing 3D data with triangles by leveraging OpenSCAD.  OpenSCAD is a programming environment in its own right, but its language is simple and lacks much of python's elegance and sophistication.  I will demonstrate how to drive OpenSCAD with python using [pyscad](https://github.com/vishnubob/pyscad).  Much like the laser cutter tutorial, we will model a simple object, a flower pot, using python.  We will break down its geometry and learn how to express it in terms of primitive solids.  From there, I will show how we can customize our flower pot script with different parameters.
 
-I will also show two more python examples that are more sophisticated, to help catalyze your imagination.  The first is a [snowflake generator](https://github.com/vishnubob/snowflake) that generates diverse snowflakes for laser cutting.  The second is a [model-rocket generator](https://github.com/vishnubob/rockit) that builds customizable, ready-to-fly 3D model rockets for 3D printing.  
+I will also show two more python examples that are more sophisticated, to help catalyze your imagination.  The first is a [snowflake generator](https://github.com/vishnubob/snowflake) that generates diverse snowflakes for laser cutting.  The second is a [model-rocket generator](https://github.com/vishnubob/rockit) that builds customizable, ready-to-fly model rockets for 3D printing.  
 
 If you don't own your own 3D printer or laser cutter, no problem!  I will explain how to gain access to these tools through your public library, maker spaces, and services like Shapeways.  Feel free to browse the [supplemental page](https://github.com/vishnubob/pycon2016) for more information. 
 
@@ -62,14 +62,12 @@ If you don't own your own 3D printer or laser cutter, no problem!  I will explai
 2. Sophisticated examples (10 min)
     1. Snowflake project (5 min)
         1. Overview of the snowflake project
-        2. Computational generation of snowflakes
-        3. Overview of the snowflake pipeline
-        4. Translating the snowflake data into SVGs for use with the laser cutter
+        2. Examples of the different snowflakes, with pictures and video
+        3. Translating the snowflake data into SVGs for use with the laser cutter
     2. Model Rockets (5 min)
-        1. Overview of the Rockit
-        2. Using Python and OpenSCAD to generate 3D models
-        3. Examples of rockets
-        4. Build pipeline
+        1. Overview of the rockit project
+        2. Examples of different model rockets, with pictures and video
+        3. Details about the pipeline and customization
 6. Resources (5 min)
     1. How to gain access to these tools if you don't own them.
     2. Link to webpage with slide deck, libraries, tutorials, and other example projects.
