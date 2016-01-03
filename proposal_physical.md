@@ -1,34 +1,26 @@
-=Title=
-
+# Title
 Fabrication with Python: How to use Python to make physical things.
 Laser Cutters, 3D printers, and python
 
-=Category=
-
+# Category
 Other
 
-=Duration=
-
+# Duration
 45 / 30 Mins
 
-=Description=
-
+# Description
 Python is an incredible language, but it does have one significant draw back: you can't touch what you make!  This talk is about leveraging python to generate physical, tangible things.  We will discuss the basics of laser cutters, 3D printers, and how you can use python to design physical objects.  After a brief introduction to these technologies, we will explore a few different examples of how we can use python to generate designs.
 
-=Audience=
-
+# Audience
 Anyone who is curious about 3D printing, laser cutting, and combining this technology with python to design physical objects.
 
-=Python Level=
-
+# Python Level
 Novice
 
-=Objectives=
-
+# Objectives
 Attendees will learn the basic facts about laser cutters and 3D printers, and how they can use python to generate designs compatible with these systems.  
 
-=Detailed Abstract=
-
+# Detailed Abstract
 Python is a wonderfully expressive language.  It lowers the barrier between our imagination and implementation.  Most of the code a programmer writes, however, stays locked inside a computer, pulling data in, pushing data out, and rarely generates results that are literally tangible.  With the advent of cheap, sophisticated 3D printers, laser cutters, and CNC machines, many enthusiasts are capable of using their home computer to make physical objects.  While most designs are built with graphical tools, Python is the great alternative to generating customizable, build-able designs.
 
 After a brief introduction to laser cutters and 3D printers, how they work, and the types of file formats used to control them, I will focus on two simple example python projects, one for each technology.  For laser cutters, I will demonstrate how to use python to design a wood box with finger joins.  We will examine the geometry of a single face and discuss how to translate its geometry into code.  We will see how the finger joins and faces are captured in the code, and pull back to see the final layout of the design.  Once we have a good grasp of the box geometry, we will add parameters to the design to make our box customizable.  
@@ -41,8 +33,7 @@ The second project is a model-rocket generator written in python, which uses my 
 
 To wrap up the talk, I will explain how to gain access to these tools if you don't own them yourself.  Public libraries, maker spaces, and services like Shapeways help democratize access to these tools.  I will supplement this talk with an informative webpage, linking to tutorials and other resources.
 
-=Outline=
-
+# Outline
 1. Introduction (5 Min)
     1. Who am I?
     2. How can computers make physical things?
@@ -86,8 +77,7 @@ To wrap up the talk, I will explain how to gain access to these tools if you don
     1. How to gain access to these tools if you don't own them.
     2. Link to webpage with slide deck, libraries, tutorials, and other example projects.
 
-=Additional Notes=
-
+# Additional Notes
 * Although this is my first PyCon talk proposal, I've presented a number of python projects and talks around the Boston area.
 * Since it will be impossible to fabricate these objects during the talk, I will bring pre-fabricated versions of the examples for the attendees to examine in detail.
 * I actively publish and support many python projects on my GitHub [profile](https://github.com/vishnubob).  My most popular project is my python [MIDI library](https://github.com/vishnubob/python-midi), which I have maintained for over ten years.  All of the projects I will speak about are already published:
@@ -96,6 +86,5 @@ To wrap up the talk, I will explain how to gain access to these tools if you don
 ** My Python-SCAD Library is published on [GitHub](https://github.com/vishnubob/pyscad).
 * This is a large amount of material to cover in 30 minutes.  My goal of this talk is to spark the imagination of folks who attend, instead of diving deep into the details.  I will supplement my talk with additional resources online and spend time at the conference to talk to folks who want more information.
 
-=Additional Requirements=
-
+# Additional Requirements
 I will be showing short video clips with sound.  Although an audio hookup is not entirely necessary, it would be nice to have.
