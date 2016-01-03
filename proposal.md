@@ -8,7 +8,7 @@ Other
 45 / 30 Mins
 
 # Description
-How to leverage python to generate physical, tangible things.  We will discuss the basics of laser cutters, 3D printers, and how you can use python to design physical objects.  After a brief introduction to these technologies, we will explore a few different examples of how we can use python to generate designs suitable for 3D printing and laser cutting.
+How to leverage python to generate physical, tangible objects.  We will discuss the basics of laser cutters, 3D printers, and how you can use python to design physical objects.  After a brief introduction to these technologies, we will explore a few different examples of how we can use python to generate designs suitable for 3D printing and laser cutting.
 
 # Audience
 Anyone who is curious about 3D printing, laser cutting, and combining this technology with python to design physical objects.
@@ -24,7 +24,7 @@ Python is a wonderfully expressive language.  It lowers the barrier between our 
 
 After a brief introduction to laser cutters and 3D printers, how they work, and the types of file formats used to control them, I will focus on two simple example python projects, one for each technology.  For laser cutters, I will demonstrate how to use python to design a wood box with finger joins.  We will examine the geometry of a single face and discuss how to translate its geometry into code.  Once we establish the geometry of the box in python, we will add parameters to the design to make our box customizable.  
 
-3D printing is more complicated, since it adds a dimension to our designs.  After an initial discussion about how 3D data is expressed, and how 3D printers use this data to generate objects, we will side-step the complexity of describing 3D data with triangles by leveraging OpenSCAD.  OpenSCAD is a programming environment in its own right, but its language is simple and lacks much of python's elegance and sophistication.  I will demonstrate how to drive OpenSCAD with python using [pyscad](https://github.com/vishnubob/pyscad).  Much like the laser cutter tutorial, we will model a simple object, a flower pot, using python.  We will break down its geometry and learn how to express it in terms of primitive solids.  From there, I will show how we can customize our flower pot script with different parameters.
+3D printing is more complicated, since it adds a dimension to our designs.  After an initial discussion about how 3D data is expressed, and how 3D printers use this data to generate objects, we will side-step the complexity of describing 3D data with triangles by leveraging OpenSCAD.  OpenSCAD is a programming environment in its own right, but its language is simple and lacks much of python's elegance and sophistication.  I will demonstrate how to drive OpenSCAD with python.  Much like the laser cutter tutorial, we will model a simple object, a flower pot, using python.  We will break down its geometry and learn how to express it in terms of primitive solids.  From there, I will show how we can customize our flower pot script with different parameters.
 
 I will also show two more python examples that are more sophisticated, to help catalyze your imagination.  The first is a [snowflake generator](https://github.com/vishnubob/snowflake) that generates diverse snowflakes for laser cutting.  The second is a [model-rocket generator](https://github.com/vishnubob/rockit) that builds customizable, ready-to-fly model rockets for 3D printing.  
 
