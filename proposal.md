@@ -115,7 +115,6 @@ If you don't own your own 3D printer or laser cutter, no problem!  I will explai
 * I actively publish and support many python projects on my GitHub [profile](https://github.com/vishnubob).  My most popular project is my python [MIDI library](https://github.com/vishnubob/python-midi), which I have maintained for over ten years.  All of the projects I will speak about are already published:
   * My laser cuttable snowflake generator is published on [GitHub](https://github.com/vishnubob/snowflake).
   * My 3D printable Model Rocket kit is published as an [instructable](http://www.instructables.com/id/Rockit-Model-Rocket-Construction-Kit/), a model on [Thingiverse](http://www.thingiverse.com/thing:262182), and a repository on [GitHub](https://github.com/vishnubob/rockit).
-  * My Python-SCAD Library is published on [GitHub](https://github.com/vishnubob/pyscad).
 * Even though this is a large amount of material to cover, my goal of this talk is to spark the imagination of folks who attend instead of diving deep into the details.  I will supplement my talk with additional resources online and spend time at the conference to talk to folks who want more information.  If I can't get a 45 minute slot, I would remove the more sophisticated examples and keep the focus on the simple projects.
 
 # Additional Requirements
