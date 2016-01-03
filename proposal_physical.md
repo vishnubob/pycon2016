@@ -1,6 +1,5 @@
 # Title
-Fabrication with Python: How to use Python to make physical things.
-Laser Cutters, 3D printers, and python
+Laser Cutters, 3D Printers, and Python
 
 # Category
 Other
@@ -9,7 +8,7 @@ Other
 45 / 30 Mins
 
 # Description
-Python is an incredible language, but it does have one significant draw back: you can't touch what you make!  This talk is about leveraging python to generate physical, tangible things.  We will discuss the basics of laser cutters, 3D printers, and how you can use python to design physical objects.  After a brief introduction to these technologies, we will explore a few different examples of how we can use python to generate designs.
+How to leverage python to generate physical, tangible things.  We will discuss the basics of laser cutters, 3D printers, and how you can use python to design physical objects.  After a brief introduction to these technologies, we will explore a few different examples of how we can use python to generate designs suitable for 3D printing and laser cutting.
 
 # Audience
 Anyone who is curious about 3D printing, laser cutting, and combining this technology with python to design physical objects.
