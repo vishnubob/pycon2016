@@ -12,18 +12,21 @@ class Specification(object):
         
         if (teeth % 2) == 0:
             # even
-            self.positive_teeth = teeth
-            self.negative_teeth = teeth - 1
-        else:
             self.negative_teeth = teeth
-            self.positive_teeth = teeth + 1
+            self.positive_teeth = teeth - 1
+        else:
+            self.positive_teeth = teeth
+            self.negative_teeth = teeth + 1
 
     def step(self):
-        x = self.width / (self.positive_teeth + 8.0)
-        x_list = [x * 2, x * 2] + ([x] * self.positive_teeth) + [x * 2, x * 2]
-        y = self.height / (self.positive_teeth + 8.0)
-        y_list = [y * 2, y * 2] + ([y] * self.positive_teeth) + [y * 2, y * 2]
-        return (x_list, y_list)
+        teeth = self.positive_teeth * 2 - 1 + 4
+        x_step = self.width / float(teeth)
+        x_step_list = [self.thickness, x_step * 2] + ([x_step] * (self.positive_teeth * 2 - 1)) + [x_step * 2, self.thickness]
+        for idx in range((self.positive_teeth * 2 - 1 + 4) * 2):
+            if idx % 2:
+                yield x_step_list[idx / 2]
+            else:
+                yield 0
 
 PointBase = namedtuple("PointBase", ('x', 'y'))
 class Point(PointBase):
@@ -86,46 +89,19 @@ class Face(object):
         # top-left
         x_offset = self.center.x - (self.spec.width / 2.0)
         y_offset = self.center.y - (self.spec.height / 2.0)
-        self.pen = Point(x_offset, y_offset)
+        self.pen = Point(x_offset + self.spec.thickness, y_offset)
         ptlist = []
         if not self.polarity[0]:
             self.pen = self.pen + self.spec.thickness
         for (direction, positive) in zip(self.EdgeList, self.polarity):
             ptlist += list(self.wave(direction, positive=positive))
+            break
         ptlist = ["M %s,%s" % ptlist[0]] + ["L %s,%s" % pt for pt in ptlist[1:]]
         d = str.join(' ', ptlist)
         path = dwg.path(d=d, fill='none', stroke_width=2, stroke='black')
         dwg.add(path)
         dbox = dwg.rect(insert=(x_offset, y_offset), size=(self.spec.width, self.spec.height), stroke='red', stroke_width=1, fill='none')
         dwg.add(dbox)
-
-    def _wave(self, direction, positive=True):
-        (step, thickness, length) = self.dirmap[direction]
-        if positive:
-            step_length = length / (self.spec.teeth * 2.0 - 1)
-            step = step * step_length
-            thickness = thickness * self.spec.thickness
-            step_map = [Point(), step]
-            thickness_map = [-thickness, Point(), thickness, Point()]
-        else:
-            step_length = length / (self.spec.teeth * 2.0)
-            step = step * step_length
-            thickness = thickness * self.spec.thickness
-            step_map = [Point(), step]
-            thickness_map = [thickness, Point(), -thickness, Point()]
-
-            #thickness_map = [-pt for pt in thickness_map]
-            #self.pen = self.pen + thickness + (step / 2.0)
-        count = self.spec.teeth * len(thickness_map) - 2
-        for idx in range(count):
-            if idx == 0:
-                yield self.pen
-                continue
-            _step = step_map[idx % 2]
-            _thickness = thickness_map[idx % 4]
-            #print (idx, self.pen, _step, _thickness)
-            self.pen = self.pen + _step + _thickness
-            yield self.pen
 
     def wave(self, direction, positive=True):
         (step, thickness, length) = self.dirmap[direction]
@@ -141,10 +117,8 @@ class Face(object):
             thickness = thickness * self.spec.thickness
             step_map = [Point(), step]
             thickness_map = [thickness, Point(), -thickness, Point()]
-
-            #thickness_map = [-pt for pt in thickness_map]
-            #self.pen = self.pen + thickness + (step / 2.0)
         count = self.spec.teeth * len(thickness_map) - 2
+        """
         for idx in range(count):
             if idx == 0:
                 yield self.pen
@@ -154,6 +128,15 @@ class Face(object):
             #print (idx, self.pen, _step, _thickness)
             self.pen = self.pen + _step + _thickness
             yield self.pen
+        """
+        _step_map = iter(self.spec.step())
+        idx = 0
+        for step in self.spec.step():
+            _step = Point(step, 0)
+            _thickness = thickness_map[idx % 4]
+            self.pen = self.pen + _step + _thickness
+            yield self.pen
+            idx += 1
 
 
 class Cube(object):
