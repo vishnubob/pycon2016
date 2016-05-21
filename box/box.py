@@ -7,6 +7,7 @@ class Specification(object):
     def __init__(self, width=4, height=4, thickness=1/8.0, teeth=4):
         self.width = width
         self.height = height
+        self.size = Point(self.width, self.height)
         self.thickness = thickness
         self.teeth = teeth
         
@@ -18,17 +19,26 @@ class Specification(object):
             self.positive_teeth = teeth
             self.negative_teeth = teeth + 1
 
-    def step(self, positive, length):
+    def step(self, length, polarity):
         teeth = self.teeth * 2 + 1
         step = length / float(teeth)
-        if positive:
+        (prev_polarity, polarity, next_polarity) = polarity
+        if polarity:
             offset = 0
             thickness = [0, self.thickness, 0, -self.thickness]
-            step_list = [0] + [step] * teeth
         else:
             offset = self.thickness
             thickness = [0, -self.thickness, 0, self.thickness]
-            step_list = [self.thickness, step - self.thickness] + ([step] * (teeth - 2)) + [step - self.thickness]
+        step_list = [step] * (teeth - 2)
+        if prev_polarity:
+            step_list = [0] + step_list + [step]
+        else:
+            step_list = [self.thickness, step - self.thickness] + step_list
+        if next_polarity:
+            step_list = step_list + [step]
+        else:
+            step_list = step_list + [step - self.thickness]
+        #yield (step_list[0], offset)
         step_idx = 1
         yield (step_list[0], offset)
         for idx in range(len(step_list) * 2 - 3):
@@ -123,51 +133,58 @@ class Face(object):
     def render(self, dwg):
         # top-left
         pts = []
-        for (direction, positive) in zip(self.EdgeList, self.polarity):
+        ptlist = []
+        for (edge_idx, direction) in enumerate(self.EdgeList):
+            polarity = (self.polarity[(edge_idx - 1) % 4], self.polarity[edge_idx], self.polarity[(edge_idx + 1) % 4])
             self.pen = self.corner(direction)
-            self.debug_step(dwg, positive, self.spec.width)
-            ptlist = list(self.wave(direction, positive=False))
-            pts += ["M %s,%s" % ptlist[0]] + ["L %s,%s" % pt for pt in ptlist[1:]]
-        """
-        self.debug_step(dwg, True, self.spec.width)
-        pts = []
-        ptlist = list(self.wave(self.EdgeList[0], positive=False))
+            #self.debug_step(dwg, self.spec.width, polarity)
+            ptlist += list(self.wave(direction, polarity))
         pts += ["M %s,%s" % ptlist[0]] + ["L %s,%s" % pt for pt in ptlist[1:]]
-        self.pen = Point(x_offset, y_offset + 75)
-        ptlist = list(self.wave(self.EdgeList[0], positive=True))
-        """
-
         d = str.join(' ', pts)
-        path = dwg.path(d=d, fill='none', stroke_width=3, stroke='black')
+        path = dwg.path(d=d, fill='none', stroke_width=1, stroke='black')
         dwg.add(path)
         insert = self.corner("right")
-        dbox = dwg.rect(insert=insert, size=(self.spec.width, self.spec.height), stroke='red', stroke_width=1, fill='none')
-        dwg.add(dbox)
+        #dbox = dwg.rect(insert=insert, size=(self.spec.width, self.spec.height), stroke='red', stroke_width=1, fill='none')
+        #dwg.add(dbox)
 
-    def wave(self, direction, positive=True):
+    def wave(self, direction, polarity):
         (step, thickness, length) = self.dirmap[direction]
-        for (_step, _thickness) in self.spec.step(positive, length):
+        for (_step, _thickness) in self.spec.step(length, polarity):
             _step = step * _step
             _thickness = thickness * _thickness
             self.pen = self.pen + _step + _thickness
-            print _step, _thickness, self.pen
             yield self.pen
-        print
-
 
 class Cube(object):
+    Faces = [
+        (1, 1, 1, 1), 
+        (1, 1, 1, 1),
+        (1, 0, 1, 0), 
+        (0, 0, 0, 0), 
+        (0, 0, 0, 0),
+        (1, 0, 1, 0),
+    ]
+
     def __init__(self, specification):
         self.specification = specification
+        self.margin = (20, 20)
+
+    def iter_faces(self):
+        center = self.specification.size / 2.0
+        pen = center + self.margin
+        for (face_idx, face) in enumerate(self.Faces):
+            yield (pen, face)
+            pen = pen + Point(self.specification.width, 0)
+            if face_idx == 2:
+                pen = center + self.margin + Point(0, self.specification.height)
 
     def render(self, filename):
         dwg = svgwrite.Drawing(filename)
-        f = Face(self.specification, center=(400, 400))
-        f.render(dwg)
-        #polarity = (0, 0, 0, 0)
-        #f = Face(self.specification, center=(850, 300), polarity=polarity)
-        #f.render(dwg)
+        for (center, polarity) in self.iter_faces():
+            f = Face(self.specification, center=center, polarity=polarity)
+            f.render(dwg)
         dwg.save()
 
-spec = Specification(width=500, height=500, thickness=25, teeth=4)
+spec = Specification(width=400, height=400, thickness=10, teeth=4)
 cube = Cube(spec)
 cube.render("test.svg")
