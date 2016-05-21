@@ -1,5 +1,7 @@
 from collections import namedtuple
 
+__all__ = ["Point"]
+
 PointBase = namedtuple("PointBase", ('x', 'y'))
 class Point(PointBase):
     def __new__(cls, x=0, y=0):
@@ -28,5 +30,3 @@ class Point(PointBase):
     
     def __neg__(self):
         return self.__class__(-self.x, -self.y)
-
-
