@@ -18,15 +18,26 @@ class Specification(object):
             self.positive_teeth = teeth
             self.negative_teeth = teeth + 1
 
-    def step(self):
-        teeth = self.positive_teeth * 2 - 1 + 4
-        x_step = self.width / float(teeth)
-        x_step_list = [self.thickness, x_step * 2] + ([x_step] * (self.positive_teeth * 2 - 1)) + [x_step * 2, self.thickness]
-        for idx in range((self.positive_teeth * 2 - 1 + 4) * 2):
-            if idx % 2:
-                yield x_step_list[idx / 2]
-            else:
-                yield 0
+    def step(self, positive, length):
+        teeth = self.teeth * 2 + 1
+        step = length / float(teeth)
+        if positive:
+            offset = 0
+            thickness = [0, self.thickness, 0, -self.thickness]
+            step_list = [0] + [step] * teeth
+        else:
+            offset = self.thickness
+            thickness = [0, -self.thickness, 0, self.thickness]
+            step_list = [self.thickness, step - self.thickness] + ([step] * (teeth - 2)) + [step - self.thickness]
+        step_idx = 1
+        yield (step_list[0], offset)
+        for idx in range(len(step_list) * 2 - 3):
+            _cliff = thickness[idx % 4]
+            _step = 0
+            if _cliff == 0:
+                _step = step_list[step_idx]
+                step_idx += 1
+            yield (_step, _cliff)
 
 PointBase = namedtuple("PointBase", ('x', 'y'))
 class Point(PointBase):
@@ -85,58 +96,63 @@ class Face(object):
     def y_step(self):
         return self.spec.height / (self.spec.teeth * 2.0 - 1)
 
-    def render(self, dwg):
+    def debug_step(self, dwg, *args):
         # top-left
         x_offset = self.center.x - (self.spec.width / 2.0)
         y_offset = self.center.y - (self.spec.height / 2.0)
-        self.pen = Point(x_offset + self.spec.thickness, y_offset)
-        ptlist = []
-        if not self.polarity[0]:
-            self.pen = self.pen + self.spec.thickness
+        pen = Point(x_offset, y_offset)
+        for (_step, _thickness) in self.spec.step(*args):
+            _step = Point(_step, 0)
+            pen = pen + _step
+            dl = dwg.line(start=(pen[0], 0), end=(pen[0], 400), stroke='green', stroke_width=1, fill='none')
+            dwg.add(dl)
+
+    def corner(self, name):
+        h_width = self.spec.width / 2.0
+        h_height = self.spec.height / 2.0
+        half_pt = Point(h_width, h_height)
+        if name == "right":
+            return self.center + (-h_width, -h_height)
+        if name == "down":
+            return self.center + (h_width, -h_height)
+        if name == "left":
+            return self.center + (h_width, h_height)
+        if name == "up":
+            return self.center + (-h_width, h_height)
+
+    def render(self, dwg):
+        # top-left
+        pts = []
         for (direction, positive) in zip(self.EdgeList, self.polarity):
-            ptlist += list(self.wave(direction, positive=positive))
-            break
-        ptlist = ["M %s,%s" % ptlist[0]] + ["L %s,%s" % pt for pt in ptlist[1:]]
-        d = str.join(' ', ptlist)
-        path = dwg.path(d=d, fill='none', stroke_width=2, stroke='black')
+            self.pen = self.corner(direction)
+            self.debug_step(dwg, positive, self.spec.width)
+            ptlist = list(self.wave(direction, positive=False))
+            pts += ["M %s,%s" % ptlist[0]] + ["L %s,%s" % pt for pt in ptlist[1:]]
+        """
+        self.debug_step(dwg, True, self.spec.width)
+        pts = []
+        ptlist = list(self.wave(self.EdgeList[0], positive=False))
+        pts += ["M %s,%s" % ptlist[0]] + ["L %s,%s" % pt for pt in ptlist[1:]]
+        self.pen = Point(x_offset, y_offset + 75)
+        ptlist = list(self.wave(self.EdgeList[0], positive=True))
+        """
+
+        d = str.join(' ', pts)
+        path = dwg.path(d=d, fill='none', stroke_width=3, stroke='black')
         dwg.add(path)
-        dbox = dwg.rect(insert=(x_offset, y_offset), size=(self.spec.width, self.spec.height), stroke='red', stroke_width=1, fill='none')
+        insert = self.corner("right")
+        dbox = dwg.rect(insert=insert, size=(self.spec.width, self.spec.height), stroke='red', stroke_width=1, fill='none')
         dwg.add(dbox)
 
     def wave(self, direction, positive=True):
         (step, thickness, length) = self.dirmap[direction]
-        if positive:
-            step_length = length / (self.spec.teeth * 2.0 - 1)
-            step = step * step_length
-            thickness = thickness * self.spec.thickness
-            step_map = [Point(), step]
-            thickness_map = [-thickness, Point(), thickness, Point()]
-        else:
-            step_length = length / (self.spec.teeth * 2.0)
-            step = step * step_length
-            thickness = thickness * self.spec.thickness
-            step_map = [Point(), step]
-            thickness_map = [thickness, Point(), -thickness, Point()]
-        count = self.spec.teeth * len(thickness_map) - 2
-        """
-        for idx in range(count):
-            if idx == 0:
-                yield self.pen
-                continue
-            _step = step_map[idx % 2]
-            _thickness = thickness_map[idx % 4]
-            #print (idx, self.pen, _step, _thickness)
+        for (_step, _thickness) in self.spec.step(positive, length):
+            _step = step * _step
+            _thickness = thickness * _thickness
             self.pen = self.pen + _step + _thickness
+            print _step, _thickness, self.pen
             yield self.pen
-        """
-        _step_map = iter(self.spec.step())
-        idx = 0
-        for step in self.spec.step():
-            _step = Point(step, 0)
-            _thickness = thickness_map[idx % 4]
-            self.pen = self.pen + _step + _thickness
-            yield self.pen
-            idx += 1
+        print
 
 
 class Cube(object):
@@ -145,7 +161,7 @@ class Cube(object):
 
     def render(self, filename):
         dwg = svgwrite.Drawing(filename)
-        f = Face(self.specification, center=(300, 300))
+        f = Face(self.specification, center=(400, 400))
         f.render(dwg)
         #polarity = (0, 0, 0, 0)
         #f = Face(self.specification, center=(850, 300), polarity=polarity)
