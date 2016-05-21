@@ -1,0 +1,15 @@
+build/
+dist/
+env/
+sctk.egg-info/
+tarpit/
+*.pyc
+*.scad
+tags
+.*DS*
+*.svg
+*.gcode
+*.stl
+._*
+*egg-info*
+.*.sw?

@@ -1,7 +1,7 @@
-#!/usr/bin/env python
-
 import svgwrite
-from collections import namedtuple
+from . point import Point
+
+__all__ = ["Specification", "Cube"]
 
 class Specification(object):
     def __init__(self, width=4, height=4, thickness=1/8.0, teeth=4):
@@ -48,35 +48,6 @@ class Specification(object):
                 _step = step_list[step_idx]
                 step_idx += 1
             yield (_step, _cliff)
-
-PointBase = namedtuple("PointBase", ('x', 'y'))
-class Point(PointBase):
-    def __new__(cls, x=0, y=0):
-        self = super(Point, cls).__new__(cls, x, y)
-        return self
-
-    def __add__(self, other):
-        if type(other) in (int, float):
-            return self.__class__(self.x + other, self.y + other)
-        return self.__class__(self.x + other[0], self.y + other[1])
-
-    def __sub__(self, other):
-        if type(other) in (int, float):
-            return self.__class__(self.x - other, self.y - other)
-        return self.__class__(self.x - other[0], self.y - other[1])
-    
-    def __mul__(self, other):
-        if type(other) in (int, float):
-            return self.__class__(self.x * other, self.y * other)
-        return self.__class__(self.x * other[0], self.y * other[1])
-    
-    def __div__(self, other):
-        if type(other) in (int, float):
-            return self.__class__(self.x / other, self.y / other)
-        return self.__class__(self.x / other[0], self.y / other[1])
-    
-    def __neg__(self):
-        return self.__class__(-self.x, -self.y)
 
 class Face(object):
     EdgeList = ["right", "down", "left", "up"]
@@ -183,8 +154,6 @@ class Cube(object):
         for (center, polarity) in self.iter_faces():
             f = Face(self.specification, center=center, polarity=polarity)
             f.render(dwg)
+            #logo = PythonLogo(center=center)
+            #logo.render(dwg)
         dwg.save()
-
-spec = Specification(width=400, height=400, thickness=10, teeth=4)
-cube = Cube(spec)
-cube.render("test.svg")
