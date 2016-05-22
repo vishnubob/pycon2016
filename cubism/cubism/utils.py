@@ -1,11 +1,11 @@
-# units
+import math
 from pint import UnitRegistry
 units = UnitRegistry()
 
 ## units
 DEFAULT_UNIT = "mm"
 
-__all__ = ["unit", "inch2mm", "mm2inch"]
+__all__ = ["unit", "inch2mm", "mm2inch", "from_polar", "to_polar"]
 
 def unit(val, **kw):
     _unit = kw.get("unit", DEFAULT_UNIT)
@@ -31,3 +31,14 @@ def inch2mm(inches):
 def mm2inch(mm):
     mm = unit(mm, unit="mm")
     return mm.to(units.inch).magnitude
+
+def from_polar(radius, angle):
+    x = radius * math.cos(angle)
+    y = radius * math.sin(angle)
+    return (x, y)
+
+def to_polar(x, y):
+    radius = math.sqrt(x ** 2 + y ** 2)
+    angle = math.atan2(y, x)
+    return (radius, angle)
+

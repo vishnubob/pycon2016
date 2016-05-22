@@ -1,9 +1,66 @@
 from . point import Point
-from . face import Face
+from . utils import *
+import math
 
-__all__ = ["PythonLogo"]
+__all__ = ["Face", "PythonLogoFace", "SunflowerFace"]
 
-class PythonLogo(Face):
+class Face(object):
+    EdgeList = ["right", "down", "left", "up"]
+
+    def __init__(self, design, polarity=(1, 1, 1, 1), center=None):
+        center = center if center != None else (0, 0)
+        self.center = Point(*center)
+        self.design = design
+        self.pen = Point(0, 0)
+        self.polarity = map(bool, polarity)
+        self.dirmap = {
+            "right": (Point(1, 0), Point(0, 1), self.design.width),
+            "down": (Point(0, 1), Point(-1, 0), self.design.height),
+            "left": (Point(-1, 0), Point(0, -1), self.design.width),
+            "up": (Point(0, -1), Point(1, 0), self.design.height),
+        }
+
+    def corner(self, name):
+        h_width = self.design.width / 2.0
+        h_height = self.design.height / 2.0
+        half_pt = Point(h_width, h_height)
+        if name == "right":
+            return self.center + (-h_width, -h_height)
+        if name == "down":
+            return self.center + (h_width, -h_height)
+        if name == "left":
+            return self.center + (h_width, h_height)
+        if name == "up":
+            return self.center + (-h_width, h_height)
+
+    def render(self, dwg):
+        # top-left
+        pts = []
+        ptlist = []
+        cut_style = self.design.style.get_style("cut-stroke")
+        for (edge_idx, direction) in enumerate(self.EdgeList):
+            polarity = (self.polarity[(edge_idx - 1) % 4], self.polarity[edge_idx], self.polarity[(edge_idx + 1) % 4])
+            self.pen = self.corner(direction)
+            #self.debug_step(dwg, self.design.width, polarity)
+            ptlist += list(self.wave(direction, polarity))
+        pts += ["M %s,%s" % ptlist[0]] + ["L %s,%s" % pt for pt in ptlist[1:]]
+        d = str.join(' ', pts)
+        #path = dwg.path(d=d, id="cut-stroke")
+        path = dwg.path(d=d, **cut_style)
+        dwg.add(path)
+        #insert = self.corner("right")
+        #dbox = dwg.rect(insert=insert, size=(self.design.width, self.design.height), stroke='red', stroke_width=1, fill='none')
+        #dwg.add(dbox)
+
+    def wave(self, direction, polarity):
+        (step, thickness, length) = self.dirmap[direction]
+        for (_step, _thickness) in self.design.step(length, polarity):
+            _step = step * _step
+            _thickness = thickness * _thickness
+            self.pen = self.pen + _step + _thickness
+            yield self.pen
+
+class PythonLogoFace(Face):
     Paths = {
         'LowerPython': 'M 154.077889,50.996396 L 154.077889,72.183968 C 154.077889,88.610406 139.997645,102.436037 123.941517,102.436039 L 75.757056,102.436039 C 62.558525,102.436039 51.636715,113.608810 51.636713,126.682184 L 51.636713,172.115896 C 51.636713,185.046592 63.005031,192.652283 75.757056,196.362041 C 91.027346,200.803063 105.670755,201.605668 123.941517,196.362041 C 136.086304,192.884139 148.061865,185.884841 148.061859,172.115896 L 148.061859,153.931292 L 99.877399,153.931292 L 99.877399,147.869756 L 148.061859,147.869756 L 172.182209,147.869756 C 186.202297,147.869756 191.426757,138.197265 196.302534,123.679221 C 201.339050,108.733121 201.124749,94.360024 196.302534,75.186931 C 192.837697,61.382304 186.220127,50.996396 172.182209,50.996396 L 154.077889,50.996396 z',
         'LowerPythonEye': 'M 126.977644,166.054365 C 131.978443,166.054370 136.029800,170.107105 136.029800,175.118859 C 136.029797,180.148444 131.978437,184.238969 126.977644,184.238969 C 121.994707,184.238969 117.925487,180.148444 117.925487,175.118859 C 117.925491,170.107105 121.994702,166.054365 126.977644,166.054365 z',
@@ -44,7 +101,7 @@ class PythonLogo(Face):
         return new_path
 
     def render(self, dwg):
-        super(PythonLogo, self).render(dwg)
+        super(PythonLogoFace, self).render(dwg)
         target_size = min(*self.design.size) * .75
         scale_factor = target_size / float(self.Size)
         offset = self.center - (target_size / 2.0)
@@ -59,3 +116,42 @@ class PythonLogo(Face):
                 style = engrave_style
             path = dwg.path(d=path, **style)
             dwg.add(path)
+
+
+class SunflowerFace(Face):
+    # https://en.wikipedia.org/wiki/Fermat%27s_spiral
+    Florets = 200
+    Angle = 137.5
+    FloretAreaRatio = .2
+    SunflowerAreaRatio = .8
+
+    @property
+    def radius(self):
+        return (min(*self.design.size) / 2.0) * self.SunflowerAreaRatio
+
+    @property
+    def constant(self):
+        constant = self.radius / math.sqrt(self.Florets)
+        return constant
+
+    @property
+    def floret_radius(self):
+        sunflower_area = math.pi * self.radius ** 2
+        floret_area = (sunflower_area / self.Florets) * self.FloretAreaRatio
+        return math.sqrt(floret_area / math.pi)
+
+    def render(self, dwg):
+        super(SunflowerFace, self).render(dwg)
+        cut_style = self.design.style.get_style("cut-stroke")
+        floret_radius = self.floret_radius
+        for pt in self.sunflower(self.Florets, self.constant):
+            pt = pt + self.center
+            floret = dwg.circle(pt, r=floret_radius, **cut_style)
+            dwg.add(floret)
+
+    def sunflower(self, florets, constant):
+        for idx in range(1, 1 + florets):
+            radius = constant * math.sqrt(idx)
+            angle = idx * math.radians(137.5)
+            xy = from_polar(radius, angle)
+            yield Point(*xy)
