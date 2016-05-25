@@ -22,6 +22,13 @@ class BaseStyle(object):
     def get_pagesize(self, name):
         return self.PageSizes[name]
 
+class Example(BaseStyle):
+    StyleSheet = {
+        "cut-stroke": {"stroke-width": "1", "stroke": "rgb(255, 255, 255)", "stroke-opacity": "1", "fill": "none"},
+        "engrave-stroke": {"stroke-width": "1", "stroke": "rgb(0, 255, 0)", "stroke-opacity": "1", "fill": "none"},
+        "engrave-area": {"fill": "rgb(0, 0, 0)", "fill-opacity": "1"},
+    }
+
 class Ponoko(BaseStyle):
     StyleSheet = {
         "cut-stroke": {"stroke-width": "0.01mm", "stroke": "rgb(0, 0, 255)", "stroke-opacity": "1", "fill": "none"},
@@ -39,5 +46,7 @@ class Ponoko(BaseStyle):
 def get_style(name=None):
     if name == "ponoko":
         return Ponoko
+    if name == "example":
+        return Example
     if name == None:
         return BaseStyle

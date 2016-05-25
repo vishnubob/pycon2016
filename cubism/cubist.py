@@ -18,6 +18,13 @@ Config = {
         "teeth": 4,
         "style": "ponoko",
     },
+    "images/example_box.svg": {
+        "size": (200, 200),
+        "thickness": 10,
+        "pagesize": (700, 500),
+        "teeth": 4,
+        "style": "example",
+    },
     "birch_7_7_06_python.svg": {
         "size": ("2.25in", "2.25in"),
         "thickness": "0.06in",
