@@ -242,6 +242,81 @@ dwg.save()
 
 # END #
 
+Note:
+
+3D printers are devices that can build 3D objects.  They range in price and sophistication, but the most common 3D printers available are known as a "Fused deposition modeling" systems.  3D printers work by breaking down 3D objects into 2D slices, that when stacked one on top of the other, will reconstruct the geomtery of the 3D object.  FDM printers work by extruding plastics at high temperatures.  Unlike laser cutters, 3D printers work in three axises.  The X and Y axis are utilized by the print head to deposit the material in the desired shape, and the Z-axis is used to advanace the model to the next 2D slice.
+
+# END #
+
+Note:
+
+About five years ago, my girlfriend and I purchased our first 3D printer.  It's an original Ultimaker, although I've heavily modified it over the years.  I was so excited when I got it, thinking of all the things I would design and print on it, but I was immediately frustrated with the standard tools people typically use to design CAD models for printing.  I would spend hours in programs like sketchup, building up a complex design only to realize I needed to change something core to the model.  Most of the design tools do not make it easy to make these kind of drastic changes.  It's like painting a family portrait only to realize you left our your brother.
+
+There are more sophisticated 3D modelers out there, including some that allow for parametric designs, but most are expensive, or only run on Windows, or are difficult to learn.  I looked around to try to find a programmatic solution, and that's how I discovered OpenSCAD.
+
+# END #
+
+Note:
+
+OpenSCAD is utilizes "Constructive Solid Geometry".  The idea is to build your objects from 2D and 3D primitives, such as cubes, cylinders and spheres.  You position these solid objects in space, and then define boolean operations between them.  The two most common boolean operations are Union, to join two or more solids as one and Difference, to subtract one or more solids from another.
+
+# END #
+
+Note:
+
+For example, consider a drinking glass.  It can be constructed with two cylinders.  The first describes the outside surface, and the second describes the empty volume inside.  Using OpenSCAD, we would define the first cylinder with a second cylinder inside.  The inside cylinder would be offset in the Z-axis (the up axis), and would have a smaller radius then the first.  We would then subtract the inner cylinder from the outer cylinder to create its empty envelope.  In order for this to work, we need to offset the inner cylinder's from the outer cylinder.
+
+# END #
+
+Note:
+
+Let's examine something a little more complicated, a flower pot.  Flower pots are similar to drinking glasses, but they also have a few distinct features.  First, most flower pots are wider at the top and smaller at the bottom.  Second, they usually have some kind of hole at the bottom to allow the water to drain.  And finally, they often have a lip at the top to make them easy to hold on to and move around.
+
+# END #
+
+Note:
+
+Before we design our flowerpot, now that we have a feeling for OpenSCAD's syntax, let's talk about how we can generate these files from python.  There are a few different python libraries out there that allow you to build OpenSCAD syntax from python, including one library I've written called `python-scad`.  Most of these libraries work in similar ways, wrapping OpenSCAD definitions with python classes.  For my demo, I will be using my library, but you can accomplish nearly the same thing with some of the other available options out there.
+
+# END #
+
+```python
+class FlowerPot(SCAD_Object):
+    radius_ratio = 0.7
+    top_radius = inch2mm(2.5)
+    bottom_radius = top_radius * radius_ratio
+    height = inch2mm(2.5)
+    thickness = inch2mm(.125)
+    drain_hole = bottom_radius * .1
+    standoff = 2
+    bottom_thickness = thickness + standoff
+    collar_radius = top_radius + inch2mm(.125)
+    collar_height = height * .2
+```
+
+# END #
+
+```python
+    def scad(self):
+        outer_pot = Cylinder(r1=self.bottom_radius, r2=self.top_radius, h=self.height)
+        collar = Cylinder(r=self.collar_radius, h=self.collar_height)
+        collar = Translate(z=self.height - self.collar_height)(collar)
+        outer_pot = Union()(collar, outer_pot)
+        inner_pot = Cylinder(r1=self.bottom_radius - self.thickness, 
+            r2=self.top_radius - self.thickness, h=self.height - self.bottom_thickness)
+        inner_pot = Translate(z=self.bottom_thickness)(inner_pot)
+        standoff = Cylinder(r=self.bottom_radius - self.thickness, h=self.standoff)
+        inner_pot = Union()(inner_pot, standoff)
+        pot = Difference()(outer_pot, inner_pot)
+        drain_hole = Cylinder(r=self.drain_hole, h=self.bottom_thickness)
+        pot = Difference()(pot, drain_hole)
+        pot = Render()(pot)
+        return pot
+```
+
+# END #
+
+
 What is 3D printing, and what is it good for?
 Why is Python a great language to generate physical things?
 3D Printers (15 min)
@@ -262,31 +337,74 @@ Snowflake project (5 min)
 Overview of the snowflake project
 # END #
 
+Note:
+Now I would like to wet your appetite by talking about two of my projects, one for laser cutting and the other for 3D printing.  The first is a project my girlfriend and I started about four years ago.  We were trying to figure out what to make our friends and family for the holidays.  Rachael found this amazing paper PAPER_TITLE that describes a physical model to simulate the growth of snowflakes.  We translated the math from the paper into python code, and proceeded to make personalized snowflakes for everyone on our gift list.
+
+# END #
+
+Note:
+The model works at the "mesoscopic" level.  It starts by seeding a hexagonal grid with an allotted number of water molecules.  These water molecules can then move from one neighboring cell to another, and can switch between three defined states "vapour", "semi-frozen", "frozen".  The initial field of water molecules are set to a vapour state, except for the cell in the middle, which is initialized as a frozen state.  From there, the simulation runs and a snowflake begins to form.
+
+# END #
+
+Note:
+As the simulation progresses, the snowflake crystal begins to grow from the initial central seed.  This builds a complex bitmap, but instead of capturing RGB intensities on a cartesian grid, the bitmap stores the density of frozen water molecules with a hexagonal grid.  When the snowflake reaches a certain pre-detemined size, the simulation stops and the program proceeds to translate the snowflake into SVG files.
+
+# END #
+
+Note:
+Two SVG files are produced and merged.  The first SVG file is a representation of densest parts of the snowflake.  That is, where the water molecules were in the highest abudance when they froze.  The second SVG file defines the outline of the snowflake.  These two files are then merged into a single SVG file, and sent to the laser cutter.
+
+# END #
+
+Note:
+The mathematical model is both complex and sophisticated.  It has 8 different parameters that help define the overall structure of the final snowflake.  We took this one step further, and allowed the parameters to change over the snowflakes growth, the anology being as a snowflake grows in weight, it begins to fall and thus its environment changes.  To personalize these snowflakes, we used the name of the intended receipient as the seed to these parameters.  What makes this algorithm so incredible is the range of snowflake species we were able to produce from it.
+
+# END #
+
 <video class="stretch">
     <source data-src="video/snowflakes.mp4" type="video/mp4"/>
 </video>
+
 # END #
 
-Translating the snowflake data into SVGs for use with the laser cutter
+Note:
+The second project I want to talk to you about is something I called Rockit, spelled ROCKIT.  This was one of the first projects I worked on that coupled Python with OpenSCAD.  Rockit is a model rocket generator, capaable of producing a wide variety of model rocket designs.
+
 # END #
 
-Model Rockets (5 min)
+Note:
+If you are not familar with model rocketry, you should know there are a range of engine sizes.  These engines are made of solid propellant packed into a cardboard tube.  The sizes vary in length and diameter, requiring different sized engine holders.  In order to build a model rocket, you first need to define the engine size.  This parameter is used to calculate other sizes, like the diameter of the rocket body and the overall size.
+
 # END #
 
-Overview of the rockit project
+Note:
+A second design feature of these rockets are the coupling sleeves used to hold the rocket together.  They work a litle like legoes, making it easy to print a rocket and snap it together without the need for glue (although a little super glue goes a long way in ensuring your rocket stays together during its flight).  You can even print the base of the rocket with sleeves, which allows you to build multi-stage rockets.
+
 # END #
 
-Examples of different model rockets, with pictures and video
+Note:
+And the best feature of rockit is that you can easily change different aspects of your design.  For example, you can swap in different kinds of nose cones, or you can add/remove fins.  One of my favorite design tweaks is to give the fins a slight tilt which makes the rocket rifle up as soon as it is launched.  Since your designs are reproducible, you can easily tweak an existing design and measure its performance characteristics compared to a previous design.
+
 # END #
 
-Details about the pipeline and customization
+Note:
+I would say the only down side is that these rockets are easily damaged.  The hot gases from the motor can sometimes warp and distort the plastic and hard landings typically result in catestrophic failure.  But, I say who cares, you can just go home and print more rockets.
+
 # END #
 
-Resources (5 min)
+- Ponoko / Shapeways
+- Local library
+- Local maker spaces
+
+Note:
+I realize not everyone has access to these tools, but don't despair, they might be able available to you within a few miles of your house.  In Boston, there are a number of local maker spaces that provide access to 3D printers and laser cutters such as the Artisan's Asylum and Danger!Awesome.  Also, some local public libraries have booted up their own maker areas that provide access to these tools.  If you can't find anything local, you can always use some of the popular internet based service providers, such as Ponoko or Shapeways.  For example, all the laser cut designs I brought for this talk were cut at Ponoko.  This area is rapidly expanding, and new tools are coming out every year.  And every year, it seems like the cost of ownership for these tools comes down in price.
+
 # END #
 
-How to gain access to these tools if you don't own them.
-# END #
+[https://github.com/vishnubob/pycon2016](https://github.com/vishnubob/pycon2016)
+[https://github.com/vishnubob/pyscad](https://github.com/vishnubob/pyscad)
+[https://github.com/vishnubob/snowflake](https://github.com/vishnubob/snowflake)
+[https://github.com/vishnubob/rockit](https://github.com/vishnubob/rockit)
 
-Link to webpage with slide deck, libraries, tutorials, and other example projects.
 # END #
