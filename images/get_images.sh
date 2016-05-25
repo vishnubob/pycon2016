@@ -33,3 +33,6 @@ wget -O cnc_4.jpg https://upload.wikimedia.org/wikipedia/commons/0/04/Mori_Seiki
 wget -O images/zing.jpg https://www.epiloglaser.com/assets/img/products/zing16-model.jpg
 wget -O images/thingomatic.jpg https://upload.wikimedia.org/wikipedia/commons/7/75/MakerBot_ThingOMatic_Bre_Pettis.jpg
 
+wget -O images/drinking_glass.jpg http://www.organizeit.com/images/090078usacry.jpg
+wget -O images/openscad.png 'http://wiki.imal.org/sites/default/files/users/user1/openscad-1349776448.png?q=wikimal/sites/default/files/users/user1/openscad-1349776448.png'
+wget -O images/flowerpot.jpg http://g01.a.alicdn.com/kf/HTB1JkOMKFXXXXXVXXXXq6xXFXXXq/3pcs-Brown-Clay-font-b-Small-b-font-Terracotta-Plant-font-b-Flower-b-font-font.jpg
