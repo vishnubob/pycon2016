@@ -14,25 +14,25 @@ Note:
 My name is Giles Hall.  I've been using python since 1996, and at this point, I consider it my mother tongue.  I utilize python throughout my life.  
 
 # END #
-<img src="images/ginkgo.png" />
+<section data-background-image="images/ginkgo.png" />
 
 Note:
 Currently, I work for a company in Boston called "Ginkgo Bioworks" -- We apply genetic engineering to build useful customized organisms.  I use python to preform data analysis to help our engineering efforts.  We are hiring!  
 
 # END #
-<img src="images/hobbies.png" />
+<section data-background-image="images/hobbies.png" />
 
 Note:
 I have many hobbies, including photography, gardening, cycling, cooking, electronics and making art.  And for each one of my hobbies, I've written at least a handful of python scripts related to it.
 
 # END #
-<img src="images/garden.png" />
+<section data-background-image="images/garden.png" />
 
 Note:
 Here is a quick example.  In my backyard, I have a Davis weather station.  This transmit weather data wirelessly to a Raspberry Pi in my house.  I have another Raspberry Pi in the basement that monitors these data, and controls a set of relays that switch on spinklers for the garden.  To me, python is not just a programming language.  It's a tool I use to creatively express myself. 
 
 # END #
-<img height="700px" src="images/not-art.jpg" />
+<section data-background-image="images/not-art.jpg" />
 
 Note: 
 But, as powerful as python is, programming by its very nature is not a physical medium.  [beat] Frederic P. Brooks wrote one of my favorite quotes about computer programming in his book The Mythical Man-Month 
@@ -53,27 +53,27 @@ Note:
 I realize not everything I said is true, we use software to manipulate our physical world every day.
 # END #
 
-<img src="images/physical.png" />
+<section data-background-image="images/physical.png" />
 
 Note:
 Our computers produce sound, and light and churn out printed documents.  There are many ways you can write code as a generator for these processes.  This is what I want to talk about, how to use code to design physical objects with python.
 
 # END #
-<img src="images/machine_age.png" />
+<section data-background-image="images/machine_age.png" />
 
 Note:
 Before there were computers, people had to make things by hand.  The period between the late 19th century and the middle of the 20th century was collectively known as the "Machine Age".  During this time, we perfected the art of building parts at an industrial scale using a process called "subtractive manufacturing".  This includes processes such as milling, turning, boring, broaching, sawing, reaming and tapping.  The general idea was to shape bulk stock into some kind of part by removing material with incredible precision.
 
 # END #
 
-<img src="images/atomic_age.png" />
+<section data-background-image="images/atomic_age.png" />
 
 Note:
 After the 1950s, the world entered the atomic age and ushered in the digital computer.  During the 1940s and 50s, existing tools like mills and lathes were connected to electric motors that were controlled with punched tape.  This was the first step towards automation of machine tools, and as computers evolved in sophistication, it spawned a new field of fabrication called Computer Numerical Control, known as CNC.
 
 # END #
 
-<img src="images/cnc.png" />
+<section data-background-image="images/cnc.png" />
 
 Note:
 Today, computer controlled automation is ubiquitous throughout all areas of manufacturing.  Not only has the computer hardware and software programming evolved in sophistication, but there are new manfacturing tools and processes that have only existed in the last few decades.  This includes plasma cutters, water jets, 5-axis milling machines, lithography... and two of my favorite technologies.
@@ -87,7 +87,7 @@ laser cutters and 3D printers.  From here, we will examine each of these technol
 
 # END #
 
-<img src="images/laser.png" />
+<section data-background-image="images/laser.png" />
 
 Note:
 Laser-cutters are devices that utilize high-powered lasers to etch or cut a variety of different materials. 
@@ -99,7 +99,7 @@ Stepper motors traverse the head in the X/Y plane parallel to the work material,
 Laser cutters are incredibly precise, and are capable of producing complex designs with intricate detail.
 
 # END #
-<img height="700px" style="background-color:white;" src="images/raster_vs_vector.png" />
+<section data-background-image="images/raster_vs_vector.png" />
 
 Note:
 Digital designs for laser cutting typically start as vector graphics.  Design programs like Adobe Illustrator and Inkscape are vector illustration packages.  This is in contrast to programs like the GIMP and Photoshop, which are raster, or bitmap, oriented graphic packages.  Vector graphics make it easy for the software controlling the motion of the laser cutter to translate the graphics into motion.  
@@ -174,19 +174,19 @@ Note:
 Now for the best part of SVG, paths.  A path is simply a list of connected like segments that are used to build complex ploygons.  Segments can be straight or curved with control points.  Coordinates can be specified in absolute coordinates or relative coordinates.  The path itself is broken up into single letter commands like 'M' for "move" or "L" for line and then two or more numbers that represent coordinates.  You can do a lot with just circles and squares, but paths allow us to build incredibly complex shapes.  When we start thinking about the laser cutter, our path might dictacte the exact path the laser head will follow.
 
 # END #
-<img width="700 px" src="images/dovetail_case.png" />
+<section data-background-image="images/dovetail_case.png" />
 
 # END #
-<img src="images/example_box.svg" />
+<section data-background-image="images/example_box.svg" />
 
 # END #
-<img src="images/example_box_polarity.svg" />
+<section data-background-image="images/example_box_polarity.svg" />
 
 # END #
-<img src="images/box_teeth.svg" />
+<section data-background-image="images/box_teeth.svg" />
 
 # END #
-<img src="images/teeth_schematic.svg" />
+<section data-background-image="images/teeth_schematic.svg" />
 
 # END #
 ```python
@@ -216,7 +216,7 @@ dwg.save()
 ```
 
 # END #
-<img src="images/wave.svg" />
+<section data-background-image="images/wave.svg" />
 
 # END #
 ``` python
@@ -266,6 +266,19 @@ OpenSCAD is utilizes "Constructive Solid Geometry".  The idea is to build your o
 # END #
 
 <image height="700px" src="images/drinking_glass.jpg" />
+
+# END #
+
+```python
+difference()
+{
+    cylinder(r=20, h=80);
+    translate([0, 0, 1])
+    {
+        cylinder(r=18, h=80);
+    }
+}
+```
 
 Note:
 For example, consider a drinking glass.  It can be constructed with two cylinders.  The first describes the outside surface, and the second describes the empty volume inside.  Using OpenSCAD, we would define the first cylinder with a second cylinder inside.  The inside cylinder would be offset in the Z-axis (the up axis), and would have a smaller radius then the first.  We would then subtract the inner cylinder from the outer cylinder to create its empty envelope.  In order for this to work, we need to offset the inner cylinder's from the outer cylinder.
@@ -324,49 +337,49 @@ Before we design our flowerpot, now that we have a feeling for OpenSCAD's syntax
 
 # END #
 
-<img height="700px" src="images/snowflake_actual.jpg" />
+<section data-background-image="images/snowflake_actual.jpg" />
 
 Note:
 Now I would like to wet your appetite by talking about two of my projects, one for laser cutting and the other for 3D printing.  The first is a project my girlfriend and I started about four years ago.  We were trying to figure out what to make our friends and family for the holidays.
 
 # END #
 
-<img height="700px" src="images/snowflake_paper.jpg" />
+<section data-background-image="images/snowflake_paper.jpg" />
 
 Note:
 Rachael found this amazing paper that describes a physical model to simulate the growth of snowflakes.  We translated the math from the paper into python code, and proceeded to make personalized snowflakes for everyone on our gift list.
 
 # END #
 
-<img height="700px" src="images/snowflake_hexgrid_empty.jpg" />
+<section data-background-image="images/snowflake_hexgrid_empty.jpg" />
 
 Note:
 The model works at the "mesoscopic" level, which is to say a collection of molecules of an undefined unit.  It starts by creating an hexagonal grid.
 
 # END #
-<img height="700px" src="images/snowflake_hexgrid_seeded.jpg" />
+<section data-background-image="images/snowflake_hexgrid_seeded.jpg" />
 
 Note:
 This grid is then populated grid with an homogenuous field of water molecules.  These water molecules can then move from one neighboring cell to another, and can switch between three defined states "vapour", "boundary", and "frozen".  The initial field of water molecules are set to a vapour state, except for the cell in the middle, which is initialized as a frozen state.  From there, the simulation runs and a snowflake begins to form.
 
 # END #
 
-<img height="700px" src="images/snowflake_hexgrid_step1.jpg" />
+<section data-background-image="images/snowflake_hexgrid_step1.jpg" />
 
 Note:
 As the simulation progresses, the snowflake crystal begins to grow from the initial central seed.  
 
 # END #
 
-<img height="700px" src="images/snowflake_hexgrid_step2.jpg" />
+<section data-background-image="images/snowflake_hexgrid_step2.jpg" />
 
 # END #
 
-<img height="700px" src="images/snowflake_hexgrid_step2.jpg" />
+<section data-background-image="images/snowflake_hexgrid_step2.jpg" />
 
 # END #
 
-<img height="700px" src="images/snowflake_bitmap.jpg" />
+<section data-background-image="images/snowflake_bitmap.jpg" />
 
 Note:
 This builds a complex bitmap, but instead of capturing RGB intensities on a cartesian grid, the bitmap stores the density of frozen water molecules with a hexagonal grid.  When the snowflake reaches a certain pre-detemined size, the simulation stops and the program proceeds to translate the snowflake into SVG files.
@@ -394,28 +407,28 @@ The mathematical model is both complex and sophisticated.  It has 8 different pa
 
 # END #
 
-<img height="700px" src="images/rockit_launch.png" />
+<section data-background-image="images/rockit_launch.png" />
 
 Note:
 The second project I want to talk to you about is something I called Rockit, spelled ROCKIT.  Rockit is a model rocket generator, written in python, and capaable of producing a wide variety of model rocket designs.  This was one of the first projects I worked on that coupled Python with OpenSCAD.  
 
 # END #
 
-<img height="700px" src="images/model_rocket_motors.jpg" />
+<section data-background-image="images/model_rocket_motors.jpg" />
 
 Note:
 If you are not familar with model rocketry, you should know there are a range of engine sizes.  These engines are made of solid propellant packed into a cardboard tube.  The sizes vary in length and diameter, requiring different sized engine holders.  In order to build a model rocket, you first need to define the engine size.  This parameter is used to calculate other sizes, like the diameter of the rocket body and the overall size.
 
 # END #
 
-<img width="1000px" src="images/exploded_rocket.png" />
+<img width="1024px" src="images/exploded_rocket.png" />
 
 Note:
 A second design feature of these rockets are the coupling sleeves used to hold the rocket together.  They work a litle like legoes, making it easy to print a rocket and snap it together without the need for glue (although a little super glue goes a long way in ensuring your rocket stays together during its flight).
 
 # END #
 
-<img height="700px" src="images/rockit_two_stage.png" />
+<section data-background-image="images/rockit_two_stage.png" />
 
 Note:
 You can even print the base of the rocket with sleeves, which allows you to build multi-stage rockets.

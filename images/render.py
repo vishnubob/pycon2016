@@ -43,7 +43,8 @@ def composite(images, target_fn):
     target.save(target_fn)
 
 MaxSize = (1024, 768)
-TargetSize = ratio(MaxSize, height=700)
+#TargetSize = ratio(MaxSize, height=700)
+TargetSize = MaxSize
 
 GinkgoImages = [
     ("ginkgo_3.jpg", "center"),
@@ -101,28 +102,33 @@ CNCImages = [
     ("cnc_2.jpg", "center"),
 ]
 
+border = 20
 
 (width, height) = TargetSize
-ratio = 1.0 / ((1 + 5 ** .5) / 2.0)
-_23_width = int(round(ratio * width))
-_13_width = width - _23_width
+golden_ratio = 1.0 / ((1 + 5 ** .5) / 2.0)
+_23_width = int(round(golden_ratio * (width - border)))
+_13_width = (width - border) - _23_width
 
-_23_height = int(round(ratio * height))
-_13_height = height - _23_height
+_23_height = int(round(golden_ratio * (height - border)))
+_13_height = (height - border) - _23_height
 
 sizes = [
+    # top-left
     [0, 0, _13_width, _23_height], 
-    [_13_width, 0, width, _23_height],
-    [0, _23_height, _23_width, height],
-    [_23_width, _23_height, width, height],
+    # top-right
+    [_13_width + border, 0, width, _23_height],
+    # bottom-left
+    [0, _23_height + border, _23_width, height],
+    # bottom-right
+    [_23_width + border, _23_height + border, width, height],
 ]
 
-composite(GinkgoImages, "images/ginkgo.png")
-composite(HobbyImages, "images/hobbies.png")
-composite(GardenImages, "images/garden.png")
+#composite(GinkgoImages, "images/ginkgo.png")
+#composite(HobbyImages, "images/hobbies.png")
+#composite(GardenImages, "images/garden.png")
 composite(LaserCutterImages, "images/laser.png")
 composite(PhysicalImages, "images/physical.png")
 composite(MachineAgeImages, "images/machine_age.png")
-composite(AtomicAgeImages, "images/atomic_age.png")
+#composite(AtomicAgeImages, "images/atomic_age.png")
 composite(CNCImages, "images/cnc.png")
 
