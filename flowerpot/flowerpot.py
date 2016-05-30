@@ -3,16 +3,17 @@
 from scad import *
 
 class FlowerPot(SCAD_Object):
-    radius_ratio = 0.7
-    top_radius = inch2mm(2.5)
-    bottom_radius = top_radius * radius_ratio
+    radius_ratio = 0.6
+    collar_height_radius = 0.2
     height = inch2mm(2.5)
-    thickness = inch2mm(.125)
-    drain_hole = bottom_radius * .1
-    standoff = 2
+    thickness = inch2mm(1/8.0)
+    standoff = thickness / 2.0
+    top_radius = height / 2.0
+    bottom_radius = top_radius * radius_ratio
+    drain_hole = bottom_radius * .2
     bottom_thickness = thickness + standoff
-    collar_radius = top_radius + inch2mm(.125)
-    collar_height = height * .2
+    collar_radius = top_radius + thickness
+    collar_height = height * collar_height_radius
 
     def scad(self):
         outer_pot = Cylinder(r1=self.bottom_radius, r2=self.top_radius, h=self.height)
@@ -33,6 +34,6 @@ pot = FlowerPot()
 pot.render("flowerpot.scad")
 stlfn = "flowerpot.stl"
 if not os.path.exists(stlfn):
-    pot = SCAD_Globals(fn=200)(pot)
+    pot = SCAD_Globals(fn=100)(pot)
     pot.render(stlfn)
 
