@@ -17,13 +17,13 @@ My name is Giles Hall.  I've been using python since 1996, and at this point, I 
 <section data-background-image="images/ginkgo.png" />
 
 Note:
-I work for a startup in Boston called "Ginkgo Bioworks" -- We apply techniques from synthetic biology and genetic engineering to build custom organisms for our customers.  We build thousands of custom of strains, and to do this at scale we rely heavily on python to help design, track and analyze our engineered samples.  If you are interested about Ginkgo and want to learn more, check us out gingobioworks.com.
+I work for a startup in Boston called "Ginkgo Bioworks" -- We apply techniques from synthetic biology and genetic engineering to build custom organisms for our customers.  We build thousands of custom strains, and to do this at scale we rely heavily on python to help design, track and analyze our engineered samples.  If you are interested about Ginkgo and want to learn more, check us out gingobioworks.com.  We are hiring!
 
 # END #
 <section data-background-image="images/hobbies.png" />
 
 Note:
-In my spare time, I explore my many hobbies; photography, gardening, cycling, cooking, electronics and making art.  For each one of my hobbies, I've written at least a handful of python scripts related to it.
+In my spare time, I like to explore my various hobbies; photography, gardening, cycling, cooking, electronics and making art.  For each one of my hobbies, I've written at least a handful of python scripts related to it.
 
 # END #
 <section data-background-image="images/garden.png" />
@@ -94,9 +94,9 @@ laser cutters and 3D printers.  Let's examine each of these technologies individ
 Note:
 Laser-cutters are devices that utilize high-powered lasers to etch or cut a variety of different materials. 
 Most commercially available laser cutters are capable of cutting and etching paper, wood, plastic, leather, and fabric up to a certain thickness.  
-The laser tube is static to the device, typically mounted towards the back. 
+The laser tube is static to the device, typically mounted towards the back of the machine. 
 Carefully positioned mirrors bounce the laser light to the laser head.  
-The head is composed of mirrors and lenses that focus the laser beam onto the target material.  
+The laser head is composed of mirrors and lenses that focus the laser beam onto the target material.  
 Stepper motors move the head in the X/Y plane parallel to the work material, tracing out the contours for a given design.  
 Laser cutters are incredibly precise, and are capable of producing complex designs with intricate detail.
 
@@ -119,7 +119,7 @@ Digital designs for laser cutting typically start as vector graphics.  Design pr
 5. Upload your design and begin cut
 
 Note:
-The process of creating laser-cut designs is relatively straight forward.  After thinking about what your design should look like, you need to pick your material and its size.  If you are cutting, thinner is usually better than thicker.  Your design should be sized according to your size constraints, although vector graphics makes it easy to scale your design without losing detail.  Most laser control software requires that you indicate which parts of your design are meant to be cut, versus which should be etched.  This can be achieved with the color of the line, for example (red for cut, blue for etch).  When you are ready to execute your cut, you position your material on the laser bed, focus the laser beam, and uplaod your design file.  Every laser cutter provides its own driver, so the specifics will be dictated by the company who made the cutter.
+The process of creating laser-cut designs is relatively straight forward.  After thinking about what your design should look like, you need to pick your material and its size.  If you are cutting, thinner is usually better than thicker.  Your design should be sized according to your size constraints, although vector graphics makes it easy to scale your design without sacraficing detail.  Most laser control software requires that you indicate which parts of your design are meant to be cut, versus which should be etched.  This can be achieved with the color of the line, for example (red for cut, blue for etch).  When you are ready to execute your cut, you position your material on the laser bed, focus the laser beam, and uplaod your design file.  Every laser cutter provides its own driver, so the specifics will be dictated by the company who made the cutter.
 
 # END #
 
@@ -142,7 +142,12 @@ The process of creating laser-cut designs is relatively straight forward.  After
 ```
 
 Note:
-This is a simple example of an SVG document.  SVG files are XML documents, and a closely related cousin to HTML.  HTML and SVG share a lot of the attribute names for various tags, like width, height, style, and border.  They share style syntax as well, and later revisions of SVG support cascading style sheets. 
+You can upload your designs to the cutter as PDF or EPS files, but I prefer SVG.  
+SVG files are XML documents, and a closely related cousin to HTML.  
+HTML and SVG share a lot of the attribute names for various tags, like width, height, style, and border.  
+They share style syntax as well, and later revisions of SVG support cascading style sheets. 
+This is a simple example of an SVG document.
+You can see the two tags, rect for the rectangle, and circ for the circle.  The rectangle tag takes an X/Y position to define its top left corner, and a width and height value to define its size.  The circle, on the other hand, requires an X/Y coordinate that defines its center, and a value for its radius.  Each of these objects take other parameters that define how the shape is stroked and filled.
 
 # END #
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
@@ -160,20 +165,20 @@ This is a simple example of an SVG document.  SVG files are XML documents, and a
 ```
 
 Note:
-My favorite feature of SVG are paths.  A path is simply a list of connected line segments that are used to build complex ploygons.  Segments can be straight or curved with control points.  The path is defined by a string of characters.  It breaks up up into single letter commands like 'M' for "move" or "L" for line and then two or more numbers that represent coordinates.  You can do a lot with just circles and squares, but paths allow us to build incredibly complex shapes.  In this example, I just rattled off a few random points to make this squiggly line.
+My favorite feature of SVG are paths.  A path is simply a list of connected line segments that are used to build complex ploygons.  A path segments can be straight line or curved spline with control points.  Within the SVG document, the path is defined by a string of characters.  The path is broken up into single letter commands like 'M' for "move" or "L" for line and then two or more numbers that represent coordinates.  You can do a lot with just circles and squares, but paths allow us to build incredibly complex shapes.  In this example, I just rattled off a few random points to make this squiggly line.
 
 # END #
 <section data-background-image="images/box_plain.jpg" />
 
 Note:
-For this talk, I wrote a python program to generate a laser cuttable cube that uses finger joints.  Even though this design is 2D, when put together like a puzzle, it produces a 3D shape.  The program is a few hundred lines, so we won't be able to discuss it in its entirety, but we will examine the geometry of the cube, and how to translate this into code.  This entire program is available at my GitHub repository for this talk. 
+For this talk, I wrote a python program to generate a laser cuttable cube that uses finger joints.  Even though this design is 2D, when put together like a puzzle, it produces a 3D shape.  The program is a few hundred lines, so we won't be able to discuss it in its entirety, but we will examine the geometry of the cube, and how to translate this into code.  This entire program is available at my GitHub repository for this talk, and I have brought examples to show folks.  Most of the examples I brought will be also be auctioned off at the PyLadies auction. 
 
 # END #
 
 <section data-background-image="images/example_box.svg" />
 
 Note:
-This is what one of the generated designs looks like, and is sent verbatim to the laser cutting control software.
+This is what one of the generated designs looks like, and is sent verbatim to the laser cutting control software.  You can see the layout of the design packs the faces close together to minimize the overall waste.  
 
 # END #
 
@@ -321,22 +326,25 @@ OpenSCAD is utilizes "Constructive Solid Geometry".  The idea is to build your o
 Note:
 For example, consider a drinking glass.  It can be constructed with two cylinders.  
 
-
 # END #
-
-<section data-background-image="images/openscad_1.png" />
+<section data-background-image="images/openscad_init.png" />
 
 Note:
-The first cylinder describes the outside surface, and the second describes the empty volume inside.   Using OpenSCAD, we would define the first cylinder with a second cylinder inside.  The inside cylinder would be offset in the Z-axis (the up axis), and would have a smaller radius then the first.  We would then subtract the inner cylinder from the outer cylinder to create its empty envelope.  In order for this to work, we need to offset the inner cylinder's from the outer cylinder.
-
+The first cylinder describes the outside surface, and the second describes the empty volume inside.   Using OpenSCAD, we would define the first cylinder with a second cylinder inside.  The inside cylinder would be offset in the Z-axis (the up axis), and would have a smaller radius then the first.  We would then subtract the inner cylinder from the outer cylinder to create its empty envelope.  In order for this to work, we need to offset the inner cylinder's from the outer cylinder.  Here, you can see in initial out Cylinder, and the code on the left is what is required to define it.
 
 # END #
 
 <section data-background-image="images/openscad_2.png" />
 
+Note:
+Next, we embed the second cylinder inside the first.  You can see the second Cylinder is defined with a Translate() command.  This is how we move the second cylinder above the first cylinder.  Right now, I have build a Union of these objects to highlight their constructive geometery, but this would not be easy to fill with a refreshing beverage.
+
 # END #
 
 <section data-background-image="images/openscad_3.png" />
+
+Note:
+There, that fixed it.  By changing the Union command to a Difference tag, we have removed the inner cylinder from the outer, and we can now pour ourselves a drink.  OpenSCAD does all of the hard, complicated math to calculate the mesh for these objects, freeing us up to think about how to construct our model with primitive shapes.
 
 # END #
 
@@ -350,6 +358,9 @@ difference()
     }
 }
 ```
+
+Note:
+I think it's impressive to consider what we can build with just four lines of code, but the scripting language for OpenSCAD is relatively simple and doesn't provide a lot of the features we know and love from Python.  But the simplicity of OpenSCAD is in our favor, since it will be easy to generate it from Python.
 
 # END #
 
@@ -379,7 +390,7 @@ class FlowerPot(SCAD_Object):
 ```
 
 Note:
-Most of SCAD objects I write in Python start out like this, with a series of parametric variables that help define the physical constraints of the object.  I try to write a few top level variables that are designed to be flexible, and then compute other variable values based on these initial values.  In this example, many variables for the flowerpot are derived from the flowerpots height.  This makes it easy to change the overall size of the flowerpot without changing each individual variable.
+Most of SCAD objects I write in Python start out like this, with a series of parametric variables that help define the physical constraints of the object.  I try to write a few top level variables that are designed to be flexible, and then compute other variable values based on these initial values.  In this example, many variables for the flowerpot are derived from the flowerpots height.  This makes it easy to change the overall size of the flowerpot without changing each individual variable.  Ratios, physical size, line-by-line.
 
 # END #
 
@@ -454,14 +465,33 @@ This grid is then populated grid with a homogenuous field of water molecules.  T
 
 # END #
 
+1. Diffusion
+    * Water vapor is averaged and dispersed amongst its neighbors.
+2. Freezing
+    * Some of the boundary vapor cells freeze.
+3. Attachment
+    * A portion of the frozen boundary cells attach to the growing crystal mass.
+4. Melting
+    * A portion of the boundary cells melt and transition back to vapor.
+5. Noise
+    * Vapor cells randomly change in density.
+
+Note:
+The model takes 8 different parameters, which dictate the behaivor of these individual steps.
+
+# END #
+
 <section data-background-image="images/snowflake_hexgrid_step1.jpg" />
 
 Note:
 As the simulation progresses, the snowflake crystal begins to grow from the initial central seed.  
 
 # END #
-
 <section data-background-image="images/snowflake_hexgrid_step2.jpg" />
+
+Note:
+The program works like a celluar automata simulation.  Each cell inspects its neighbors and calculates the changes based on these parameters.
+Because there are hundreds of thousands of cells, the simulation is computationally intensive, taking hours to run.  In order to generate the hundred snowflakes we made as gifts, we generated our snowflakes in the cloud (yuk yuk)
 
 # END #
 
